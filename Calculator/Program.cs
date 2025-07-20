@@ -6,19 +6,19 @@ class Calculator
         Console.WriteLine("Welcome to the Calculator!");
         int firstNumber = AskNumber();
         int secondNumber = AskNumber();
-        Console.WriteLine("Please enter an operator (+, -, *, /):");
 
-        string operatorSigne = Console.ReadLine();
+        char operatorSigne = SelectOperator();
+        
 
         switch (operatorSigne)
         {   
-            case "+":
+            case '+':
                 Addition(firstNumber, secondNumber); break;
-            case "-":
+            case '-':
                 Soustraction(firstNumber, secondNumber); break;
-            case "*":
+            case '*':
                 Multiplication(firstNumber, secondNumber); break;
-            case "/":
+            case '/':
                 Division(firstNumber, secondNumber); break;
         }
     }
@@ -62,6 +62,31 @@ class Calculator
             catch (FormatException)
             {
                 Console.WriteLine("Not a number... Try again ...");
+            }
+        }
+    }
+
+    public static char SelectOperator()
+    {
+        while (true)
+        {
+            Console.WriteLine("Please enter an operator (+, -, *, /):");
+            string? input = Console.ReadLine();
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(input) || input.Length != 1)
+                    throw new ArgumentException("Vous devez entrer un seul caractère.");
+
+                char op = input[0];
+                if (op != '+' && op != '-' && op != '*' && op != '/')
+                    throw new ArgumentOutOfRangeException(nameof(input), op, "Opérateur non reconnu.");
+
+                return op;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erreur : {ex.Message} Réessayez.");
             }
         }
     }
